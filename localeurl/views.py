@@ -18,12 +18,11 @@ def change_locale(request):
     if not next:
         next = '/'
     _, path = utils.strip_path(next)
-    if request.method == 'POST':
-        locale = request.POST.get('locale', None)
-        if locale and check_for_language(locale):
-            if localeurl_settings.USE_SESSION:
-                request.session['django_language'] = locale
-            path = utils.locale_path(path, locale)
+    locale = request.REQUEST.get('locale', None)
+    if locale and check_for_language(locale):
+        if localeurl_settings.USE_SESSION:
+            request.session['django_language'] = locale
+        path = utils.locale_path(path, locale)
 
     response = http.HttpResponseRedirect(path)
     return response
